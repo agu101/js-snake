@@ -12,8 +12,8 @@ body {
 /* game board */
 #board {
     background-color: white;
-    width: 100vmin;
-    height: 100vmin;
+    width: 90vmin;
+    height: 90vmin;
     display: grid;
     grid-template-columns: repeat(31, 1fr);
     grid-template-rows: repeat(31, 1fr);
@@ -21,13 +21,15 @@ body {
 
 /* snake */
 .snake {
-    background-color: blueviolet;
-    border: .25vmin solid black;
+    background-color: rgb(160, 114, 202);
+    border: .25vh solid rgb(91, 32, 146);
+    border-radius: 100%;
 }
 
 /* food */
-.food {
+.bubble {
     background-color: red;
-    border: .25vmin solid black;
+    border: .25vmin solid rgb(255, 255, 255);
+    border-radius: 100%;
 }
 
