@@ -1,5 +1,5 @@
 /* game constants */
-const SNAKE_SPEED = 5;
+const SNAKE_SPEED = 10;
 const board = document.getElementById('board');
 
 /* game elements */
@@ -7,7 +7,7 @@ const snake = [{ x: 16, y: 16 }];
 let vx = 0;
 let vy = 0;
 
-let bubble = { x: 0, y: 0 };
+let bubble = { x: 1, y: 1 };
 
 
 /* sets up game loop */
@@ -54,7 +54,6 @@ function update() {
     snake.unshift(head);
     /* grows snake if on food */
     if (snake[0].x === bubble.x && snake[0].y === bubble.y) {
-        console.log("collision");
         bubble.x = Math.floor(Math.random() * Math.floor(30)) + 1;
         bubble.y = Math.floor(Math.random() * Math.floor(30)) + 1;
     } else {
