@@ -1,22 +1,32 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap');
 /* general body style */
 body {
+    font-family: 'Roboto', sans-serif;
     height: 100vh;
     width: 100vw;
     display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
     justify-content: center;
     align-items: center;
-    margin: 3vh;
     background-color: rgb(116, 195, 240);
+    overflow: hidden;
 }
 
 /* game board */
 #board {
     background-color: white;
-    width: 90vmin;
-    height: 90vmin;
+    width: 85vmin;
+    height: 85vmin;
     display: grid;
     grid-template-columns: repeat(31, 1fr);
     grid-template-rows: repeat(31, 1fr);
+}
+
+/* score */
+#score {
+    font-size: 3vh;
 }
 
 /* snake */
@@ -28,8 +38,8 @@ body {
 
 /* bubble */
 .bubble {
-    background-color: red;
-    border: .25vmin solid rgb(255, 255, 255);
-    border-radius: 100%;
+    background-color: rgb(255, 196, 0);
+    border: 0 solid rgb(255, 255, 255);
+    border-radius: 50%;
 }
 

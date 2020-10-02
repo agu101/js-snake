@@ -1,14 +1,15 @@
 /* game constants */
-const SNAKE_SPEED = 10;
+let SNAKE_SPEED = 10;
 const board = document.getElementById('board');
+const score = document.getElementById('score');
 
 /* game elements */
-const snake = [{ x: 16, y: 16 }];
+let snake = [{ x: 16, y: 16 }];
 let vx = 0;
 let vy = 0;
 
 let bubble = { x: 1, y: 1 };
-
+newBubblePos();
 
 /* sets up game loop */
 let lastRender = 0;
@@ -16,17 +17,24 @@ let lastRender = 0;
 window.requestAnimationFrame(main);
 
 function main(time) {
-    window.requestAnimationFrame(main)
-    let timeElapsed = (time - lastRender) / 1000;
-    /* if time between render is too small, skip to next call*/
-    if (timeElapsed < (1 / SNAKE_SPEED)) {
+    /* checks for game end */
+    if (gameEnd()) {
+        if (confirm("You lost! Start over?")) {
+            window.location.reload();
+        }
         return;
     }
 
+    window.requestAnimationFrame(main);
+    /* if time between render is too small, skip to next call*/
+    let timeElapsed = (time - lastRender) / 1000;
+    if (timeElapsed < (1 / SNAKE_SPEED)) {
+        return;
+    }
+    lastRender = time;
+
     update();
     render(board);
-
-    lastRender = time;
 }
 
 /* takes in user arrow key input */
@@ -52,14 +60,36 @@ function update() {
     /* updates snake position */
     let head = { x: snake[0].x + vx, y: snake[0].y + vy };
     snake.unshift(head);
-    /* grows snake if on food */
+    /* grows snake if on bubble */
     if (snake[0].x === bubble.x && snake[0].y === bubble.y) {
-        bubble.x = Math.floor(Math.random() * Math.floor(30)) + 1;
-        bubble.y = Math.floor(Math.random() * Math.floor(30)) + 1;
+        newBubblePos();
     } else {
         snake.pop();
     }
+    /* speed ramp */
+    SNAKE_SPEED = Math.log(snake.length) + 5;
+}
 
+/* finds a new position for the bubble so its not on the snake */
+function newBubblePos() {
+    let onSnake = true;
+    while (onSnake) {
+        bubble.x = Math.floor(Math.random() * Math.floor(31)) + 1;
+        bubble.y = Math.floor(Math.random() * Math.floor(31)) + 1;
+        if (!isOnSnake()) {
+            onSnake = false;
+        }
+    }
+}
+
+/* checks if bubble is spawned on snake */
+function isOnSnake() {
+    for (let i = 0; i < snake.length; i++) {
+        if (bubble.x === snake[i].x && bubble.y === snake[i].y) {
+            return true;
+        }
+    }
+    return false;
 }
 
 /* renders graphics each loop */
@@ -81,6 +111,22 @@ function render(board) {
     bub.style.gridRowStart = bubble.y;
     bub.classList.add('bubble');
     board.appendChild(bub);
+
+    /* updates score */
+    score.textContent = `Score: ${snake.length - 1}`;
 }
 
-
+/* checks for end-conditions */
+function gameEnd() {
+    /* has snake head collided with the body */
+    for (let i = 1; i < snake.length; i++) {
+        if (snake[0].x === snake[i].x && snake[0].y === snake[i].y) {
+            return true;
+        }
+    }
+    /* check if wall hit */
+    if (snake[0].x < 1 || snake[0].x > 31 || snake[0].y < 1 || snake[0].y > 31) {
+        return true;
+    }
+    return false;
+}
